@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>签</title>
+</head>
+<body>
+    <h1>愿Emoji之神保佑你……</h1>
+    <img id="myImage" src="" alt="随机图片">
+    <p id="myTime"></p>
+
+    <script>
+        // 从你的云端库中获取随机图片的URL
+        var imageUrl = "https://static.igem.wiki/teams/4594/wiki/roster-static/roster-dcc.jpg"; // 请替换为实际的图片URL
+
+        // 获取当前时间
+        var now = new Date();
+        var timeString = now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate() + " " + now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+
+        // 将图片URL和时间显示在网页上
+        document.getElementById("myImage").src = imageUrl;
+        document.getElementById("myTime").innerHTML = "求签时间 " + timeString;
+    </script>
+</body>
+</html>
