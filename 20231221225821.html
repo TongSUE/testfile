@@ -1,0 +1,51 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Emoji</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                text-align: center;
+            }
+
+            .container {
+                max-width: 800px; 
+                margin: 0 auto; 
+                padding: 20px;
+            }
+
+            h1 {
+                color: #333;
+            }
+
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            #myTime {
+                font-size: 18px;
+                color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>May the God of Emoji bless you ...</h1>
+            <img id="myImage" src="" alt="&#x1F6BD; The emoji god went to find inspiration, wait a moment.">
+            <p id="myTime"></p>
+        </div>
+
+        <script>
+            var imageUrl = 'https://raw.githubusercontent.com/TongSUE/testfile/gh-pages/0.png'; 
+
+            document.getElementById("myImage").src = imageUrl;
+            document.getElementById("myTime").innerHTML = "Time " + "2023-12-21 22:58:21";
+        </script>
+    </body>
+    </html>    
