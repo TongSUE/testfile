@@ -1,0 +1,93 @@
+
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Emoji</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 0;
+                        padding: 0;
+                        text-align: center;
+                    }
+
+                    .container {
+                        max-width: 800px; 
+                        margin: 0 auto; 
+                        padding: 20px;
+                    }
+
+                    h1 {
+                        color: #333;
+                    }
+
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+
+                    #myTime {
+                        font-size: 18px;
+                        color: #555;
+                    }
+
+                    #loadingMessage {
+                        font-size: 16px;
+                        color: #888;
+                    }
+
+                    .separator {
+                        border-top: 2px solid #ddd; 
+                        margin: 20px 0; 
+                    }
+
+                    .about{
+                        text-align:center;
+                        font-size:10px;
+                    }
+                    
+                    .button {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        background-color: #007bff;
+                        color: #fff;
+                        text-decoration: none;
+                        border-radius: 5px;
+                        transition: background-color 0.3s ease;
+                    }
+
+                    .button:hover {
+                        background-color: #0056b3;
+                    }
+
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>May the God of Emoji bless you ...</h1>
+                    <img id="myImage" src="" alt="Waiting...">
+                    <p id="loadingMessage">&#x1F92F; The emoji god is troubled by a math problem; refresh is the only antidote.</p>
+                    <p id="myTime"></p>
+
+                    <div class="separator"></div>
+                    <p id= "about">About The Project</p>
+                    <a href="https://tongsue.github.io/testfile/Intro.html" class="button">Go to Intro Page</a>
+
+                </div>
+
+                <script>
+                    var imageUrl = 'https://raw.githubusercontent.com/TongSUE/testfile/gh-pages/2.png';
+                    var loadingMessage = document.getElementById("loadingMessage");
+                    
+                    setTimeout(function() {
+                        document.getElementById("myImage").src = imageUrl;
+                        loadingMessage.innerHTML = "The emoji god has given you a revelation...";
+                    }, 3000);
+
+                    document.getElementById("myTime").innerHTML = "Time " + "2023-12-22 00:54:23";
+                </script>
+            </body>
+            </html>
+            
