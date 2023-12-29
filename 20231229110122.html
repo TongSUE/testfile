@@ -1,0 +1,48 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Emoji</title>
+            <style>
+                /* Your existing CSS styles here */
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>May the God of Emoji bless you ...</h1>
+                <img id="myImage" src="" alt="Waiting...">
+                <p id="loadingMessage">&#x1F47E; The emoji god is kidnapped by electronic monsters, looking for Ctrl + Alt + Del.</p>
+                <p id="myTime"></p>
+                
+                <div class="separator"></div>
+                <p id="about">About The Project</p>
+                <a href="https://tongsue.github.io/testfile/Intro.html" class="button">Go to Intro Page</a>
+            </div>
+
+            <script>
+                var imageUrl = 'https://raw.githubusercontent.com/TongSUE/testfile/gh-pages/5.png';
+                var loadingMessage = document.getElementById("loadingMessage");
+
+                // Show random loading message initially
+                setTimeout(function() {
+                    loadingMessage.innerHTML = "&#x1F47E; The emoji god is kidnapped by electronic monsters, looking for Ctrl + Alt + Del.";
+                }, 0);
+
+                // Wait for the page to load completely
+                window.onload = function() {
+                    // Load the image after 3 seconds
+                    setTimeout(function() {
+                        document.getElementById("myImage").src = imageUrl;
+                        // Update loading message after the image is loaded
+                        document.getElementById("loadingMessage").innerHTML = "The emoji god has given you a revelation...";
+                    }, 3000);
+                    
+                    // Update timestamp
+                    document.getElementById("myTime").innerHTML = "Time " + "2023-12-29 11:01:22";
+                };
+            </script>
+        </body>
+        </html>
+    
