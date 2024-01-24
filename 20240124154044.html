@@ -1,0 +1,159 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Emoji</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                }
+
+                .container {
+                    max-width: 800px; 
+                    margin: 0 auto; 
+                    padding: 20px;
+                }
+
+                h1 {
+                    color: #333;
+                }
+
+                #loadingContainer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                }
+
+                #loadingAnimation {
+                    font-size: 24px;
+                    color: #ff6600; 
+                    font-family: Times New Roman;
+                    display: inline-block;
+                    animation: bounce 1s infinite;
+                }
+
+                @keyframes bounce {
+                    0%, 20%, 50%, 80%, 100% {
+                        transform: translateY(0);
+                    }
+                    40% {
+                        transform: translateY(-10px);
+                    }
+                    60% {
+                        transform: translateY(-5px);
+                    }
+                }
+
+                img {
+                    max-width: 100%;
+                    height: auto;
+                    display: none; 
+                }
+
+                #myTime {
+                    font-size: 18px;
+                    color: #555;
+                }
+
+                #loadingMessage {
+                    font-size: 16px;
+                    color: #888;
+                }
+
+                .separator {
+                    border-top: 2px solid #ddd; 
+                    margin: 20px 0; 
+                }
+
+                .about {
+                    text-align:center;
+                    font-size:10px;
+                }
+
+                .button {
+                    display: inline-block;
+                    padding: 10px 20px;
+                    background: linear-gradient(45deg, #ff6600, #ffcc00);
+                    color: #fff;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    transition: background 0.3s ease, box-shadow 0.3s ease;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+
+                .button:hover {
+                    background: linear-gradient(45deg, #ffcc00, #ff6600);
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+                }
+
+                #newButton {
+                    display: none;
+                    border-radius: 50%;
+                    width: 100px;
+                    height: 100px;
+                    background: linear-gradient(45deg, #ff6600, #ffcc00);
+                    color: #fff;
+                    font-size: 16px;
+                    cursor: pointer;
+                    transition: opacity 0.3s ease, box-shadow 0.3s ease;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    border: none;
+                    font-weight: bold;
+                }
+
+                #newButton:hover {
+                    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>May the God of Emoji bless you ...</h1>
+                <div id="loadingContainer">
+                    <span id="loadingAnimation">Loading...</span>
+                    <img id="myImage" src="https://www.gstatic.com/android/keyboard/emojikitchen/20230803/u1f32a-ufe0f/u1f32a-ufe0f_u1f3b6.png" alt="Waiting..." onload="handleImageLoad()">
+                    <button id="newButton" onclick="revealImage()">CHECK</button>
+                </div>
+                <p id="loadingMessage">&#x1F52E; The emoji god is checking the horoscope; it will give you the most suitable emoji.</p>
+                <p id="myTime"></p>
+
+                <div class="separator"></div>
+                <p id="about">About The Project</p>
+                <a href="https://tongsue.github.io/testfile/Intro.html" class="button">Go to Intro Page</a>
+            </div>
+
+            <script>
+                function handleImageLoad() {
+                    var loadingContainer = document.getElementById("loadingContainer");
+                    var loadingAnimation = document.getElementById("loadingAnimation");
+                    var myImage = document.getElementById("myImage");
+                    var loadingMessage = document.getElementById("loadingMessage");
+                    var newButton = document.getElementById("newButton");
+
+                    setTimeout(function() {
+                        loadingContainer.removeChild(loadingAnimation); 
+                        newButton.style.display = "block";
+                    }, 3000);
+                    
+                    document.getElementById("myTime").innerHTML = "Time " + "2024-01-24 15:40:44";
+                }
+
+                function revealImage() {
+                    var myImage = document.getElementById("myImage");
+                    var loadingMessage = document.getElementById("loadingMessage");
+                    var newButton = document.getElementById("newButton");
+
+                    loadingMessage.innerHTML = "The emoji god has given you a revelation...";
+                    newButton.style.display = "none";
+                    myImage.style.display = "block";
+                }
+            </script>
+        </body>
+        </html>
+    
