@@ -89,7 +89,7 @@
           ctx.fillText(content.text, canvas.width / 2, 30); // Adjust position as needed
 
           // Draw QR code
-          drawQRCode(canvas, 'https://tongsue.github.io/testfile/gptpagesqr.html?uid=' + uid);
+          drawQRCode(canvas, 'https://tongsue.github.io/testfile/gptpagesqr.html?uid=' + uid, 10, canvas.height - 110, 100);
 
           // After drawing, enable download button
           document.getElementById('downloadButton').addEventListener('click', function() {
@@ -101,29 +101,16 @@
       templateImg.src = content.templateUrl;
     }
 
-    function drawQRCode(canvas, url) {
+    function drawQRCode(canvas, url, x, y, size) {
       var qr = qrcode(0, 'L');
       qr.addData(url);
       qr.make();
-      var qrData = qr.createImageData(10, 10);
-      for (var x = 0; x < qrData.width; x++) {
-        for (var y = 0; y < qrData.height; y++) {
-          var index = (y * qrData.width + x) * 4;
-          if (qr.isDark(x, y)) {
-            qrData.data[index] = 0;
-            qrData.data[index + 1] = 0;
-            qrData.data[index + 2] = 0;
-            qrData.data[index + 3] = 255;
-          } else {
-            qrData.data[index] = 0;
-            qrData.data[index + 1] = 0;
-            qrData.data[index + 2] = 255;
-            qrData.data[index + 3] = 255;
-          }
-        }
-      }
-      var qrImage = new ImageData(qrData, qrData.width, qrData.height);
-      ctx.putImageData(qrImage, 10, canvas.height - qrData.height - 10);
+      var qrData = qr.createImgTag(size);
+      var qrImage = new Image();
+      qrImage.src = qrData;
+      qrImage.onload = function() {
+        ctx.drawImage(qrImage, x, y, size, size);
+      };
     }
 
     function downloadImage(canvas) {
