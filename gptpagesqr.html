@@ -34,6 +34,7 @@
   <button id="downloadButton">Download Image</button>
   <button id="introButton" onclick="redirectToIntro()">Project Introduction</button>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
   <script>
     // Parse UID from URL
     var url = new URL(window.location.href);
@@ -80,6 +81,9 @@
           ctx.textAlign = 'center';
           ctx.fillText(content.text, canvas.width / 2, 30); // Adjust position as needed
 
+          // Draw QR code
+          drawQRCode(canvas, 'https://tongsue.github.io/testfile/Intro.html');
+
           // After drawing, enable download button
           document.getElementById('downloadButton').addEventListener('click', function() {
             downloadImage(canvas);
@@ -88,6 +92,20 @@
         otherImg.src = content.imageUrl;
       };
       templateImg.src = content.templateUrl;
+    }
+
+    function drawQRCode(canvas, url) {
+      var qr = qrcode(0, 'L');
+      qr.addData(url);
+      qr.make();
+      var qrImg = qr.createImgTag(6); // Adjust size as needed
+      var img = new Image();
+      img.onload = function() {
+        var x = canvas.width - img.width - 10;
+        var y = canvas.height - img.height - 10;
+        canvas.getContext('2d').drawImage(img, x, y);
+      };
+      img.src = qrImg.slice(10, -3); // Remove "data:image/png;base64," prefix
     }
 
     function downloadImage(canvas) {
