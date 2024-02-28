@@ -76,7 +76,7 @@
         var otherImg = new Image();
         otherImg.onload = function() {
           // Calculate position and size of other image
-          var imageSize = Math.min(canvas.width / 3, canvas.height / 3); // Adjust size as needed
+          var imageSize = Math.min(canvas.width / 2, canvas.height / 2); // Adjust size as needed
           var imageX = (canvas.width - imageSize) / 2;
           var imageY = (canvas.height - imageSize) / 2;
           // Draw other image
@@ -115,8 +115,8 @@
             qrData.data[index + 2] = 0;
             qrData.data[index + 3] = 255;
           } else {
-            qrData.data[index] = 255;
-            qrData.data[index + 1] = 255;
+            qrData.data[index] = 0;
+            qrData.data[index + 1] = 0;
             qrData.data[index + 2] = 255;
             qrData.data[index + 3] = 255;
           }
