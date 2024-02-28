@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Content Generator with QR Code</title>
   <style>
+
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -42,6 +43,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
   <script>
     var uid = "202402290222"; // Replace with actual UID
+    var canvas = document.getElementById('canvas'); // Get canvas element globally
 
     // Load content based on UID
     fetch('https://raw.githubusercontent.com/TongSUE/testfile/gh-pages/content.json')
@@ -58,8 +60,7 @@
       .catch(error => console.error('Error:', error));
 
     function generateImage(content) {
-      var canvas = document.getElementById('canvas');
-      var ctx = canvas.getContext('2d');
+      var ctx = canvas.getContext('2d'); // Get canvas context
 
       // Load template image
       var templateImg = new Image();
@@ -81,34 +82,72 @@
           ctx.drawImage(otherImg, imageX, imageY, imageSize, imageSize);
 
           // Draw text
-          ctx.font = '20px Arial';
-          ctx.fillStyle = 'rgb(0, 0, 255)';
+          ctx.font = 'bold 50px Helvetica';;
+          ctx.fillStyle = 'rgba(0,0,255,1)';
           ctx.textAlign = 'center';
-          ctx.fillText(content.text, canvas.width / 2, 30); // Adjust position as needed
+          ctx.fillText(content.text, canvas.width / 2, 200); // Adjust position as needed
 
           // Generate QR code after drawing everything
-          generateQRCode(canvas);
+          generateQRCode([0, 0, 255], [255, 255, 255]); // 使用红色前景色和白色背景色
+
+
         };
         otherImg.src = content.imageUrl;
       };
       templateImg.src = content.templateUrl;
     }
 
-    function generateQRCode(canvas) {
-      var ctx = canvas.getContext('2d');
-      var qr = qrcode(0, 'L');
-      var url = 'https://tongsue.github.io/testfile/q.html?uid=' + uid;
-      qr.addData(url);
-      qr.make();
-      var qrData = qr.createDataURL(4, 0);
-      var qrImg = new Image();
-      qrImg.onload = function() {
-        ctx.drawImage(qrImg, 20, canvas.height - qrImg.height - 20); // Adjust position as needed
-      };
-      qrImg.src = qrData;
+    function generateQRCode(foregroundColor, backgroundColor) {
+  var ctx = canvas.getContext('2d');
+  var qr = qrcode(0, 'L');
+  var url = 'https://tongsue.github.io/testfile/q.html?uid=' + uid;
+  qr.addData(url);
+  qr.make();
+  var qrData = qr.createDataURL(4, 0);
+
+  // 创建一个 Image 元素来加载二维码数据
+  var qrImg = new Image();
+  qrImg.onload = function() {
+    // 创建一个临时 canvas 来绘制二维码
+    var tempCanvas = document.createElement('canvas');
+    var tempCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = qrImg.width;
+    tempCanvas.height = qrImg.height;
+    tempCtx.drawImage(qrImg, 0, 0);
+    
+    // 获取二维码图像的像素数据
+    var imgData = tempCtx.getImageData(0, 0, qrImg.width, qrImg.height);
+    var pixels = imgData.data;
+
+    // 修改像素颜色
+    for (var i = 0; i < pixels.length; i += 4) {
+      // 如果像素是黑色，则替换为前景色
+      if (pixels[i] < 128) {
+        pixels[i] = foregroundColor[0];
+        pixels[i + 1] = foregroundColor[1];
+        pixels[i + 2] = foregroundColor[2];
+        pixels[i + 3] = 255; // 不透明
+      } else { // 否则替换为背景色
+        pixels[i] = backgroundColor[0];
+        pixels[i + 1] = backgroundColor[1];
+        pixels[i + 2] = backgroundColor[2];
+        pixels[i + 3] = 255; // 不透明
+      }
     }
 
-    function downloadImage(canvas) {
+    // 将修改后的像素数据放回临时 canvas
+    tempCtx.putImageData(imgData, 0, 0);
+
+    // 将临时 canvas 中的图像绘制到主 canvas 上
+    ctx.drawImage(tempCanvas, 20, canvas.height - tempCanvas.height - 20); // 调整二维码的位置
+  };
+
+  qrImg.src = qrData;
+}
+
+
+
+    function downloadImage() {
       var image = canvas.toDataURL('image/jpeg');
       var link = document.createElement('a');
       link.href = image;
