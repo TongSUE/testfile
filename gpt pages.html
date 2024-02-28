@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    #canvasContainer {
+      position: relative;
+      margin: 20px auto;
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+    }
+
+    #downloadButton, #introButton {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Content Generator</h1>
+
+  <div id="canvasContainer">
+    <canvas id="canvas" width="600" height="400"></canvas>
+  </div>
+
+  <button id="downloadButton">Download Image</button>
+  <button id="introButton" onclick="redirectToIntro()">Project Introduction</button>
+
+  <script>
+    // Parse UID from URL
+    var url = new URL(window.location.href);
+    var uid = url.searchParams.get("uid");
+
+    // Load content based on UID
+    fetch('https://raw.githubusercontent.com/TongSUE/testfile/gh-pages/content.json')
+      .then(response => response.json())
+      .then(data => {
+        var content = data[uid];
+        if (content) {
+          generateImage(content);
+        } else {
+          alert('Content not found!');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+
+    function generateImage(content) {
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext('2d');
+
+      // Load template image
+      var templateImg = new Image();
+      templateImg.onload = function() {
+        // Resize template image
+        canvas.width = templateImg.width;
+        canvas.height = templateImg.height;
+        ctx.drawImage(templateImg, 0, 0);
+
+        // Load other image
+        var otherImg = new Image();
+        otherImg.onload = function() {
+          // Draw other image
+          ctx.drawImage(otherImg, 50, 50); // Adjust position as needed
+
+          // Draw text
+          ctx.font = '20px Arial';
+          ctx.fillStyle = 'black';
+          ctx.textAlign = 'center';
+          ctx.fillText(content.text, canvas.width / 2, 30); // Adjust position as needed
+
+          // After drawing, enable download button
+          document.getElementById('downloadButton').addEventListener('click', function() {
+            downloadImage(canvas);
+          });
+        };
+        otherImg.src = content.imageUrl;
+      };
+      templateImg.src = content.templateUrl;
+    }
+
+    function downloadImage(canvas) {
+      var image = canvas.toDataURL('image/jpeg');
+      var link = document.createElement('a');
+      link.href = image;
+      link.download = 'generated_image.jpg';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function redirectToIntro() {
+      window.location.href = 'https://tongsue.github.io/testfile/Intro.html';
+    }
+  </script>
+</body>
+</html>
