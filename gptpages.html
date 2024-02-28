@@ -28,7 +28,7 @@
   <h1>Content Generator</h1>
 
   <div id="canvasContainer">
-    <canvas id="canvas" width="600" height="400"></canvas>
+    <canvas id="canvas" width="960" height="540"></canvas>
   </div>
 
   <button id="downloadButton">Download Image</button>
@@ -67,12 +67,16 @@
         // Load other image
         var otherImg = new Image();
         otherImg.onload = function() {
+          // Calculate position and size of other image
+          var imageSize = Math.min(canvas.width / 3, canvas.height / 3); // Adjust size as needed
+          var imageX = (canvas.width - imageSize) / 2;
+          var imageY = (canvas.height - imageSize) / 2;
           // Draw other image
-          ctx.drawImage(otherImg, 50, 50); // Adjust position as needed
+          ctx.drawImage(otherImg, imageX, imageY, imageSize, imageSize);
 
           // Draw text
           ctx.font = '20px Arial';
-          ctx.fillStyle = 'black';
+          ctx.fillStyle = 'rgb(0, 0, 255)';
           ctx.textAlign = 'center';
           ctx.fillText(content.text, canvas.width / 2, 30); // Adjust position as needed
 
