@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Content Generator</title>
+  <title>Content Generator with QR Code</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,13 +14,14 @@
 
     #canvasContainer {
       position: relative;
-      width: 100%;
+      width: 80vw; /* Adjust width as needed */
+      margin: auto;
     }
 
-    canvas {
+    canvas, img {
       display: block;
       margin: auto;
-      width: 100%;
+      max-width: 100%;
     }
 
     #downloadButton, #introButton {
@@ -29,7 +30,7 @@
   </style>
 </head>
 <body>
-  <h1>Content Generator</h1>
+  <h1>Content Generator with QR Code</h1>
 
   <div id="canvasContainer">
     <canvas id="canvas"></canvas>
@@ -40,9 +41,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
   <script>
-    // Parse UID from URL
-    var url = new URL(window.location.href);
-    var uid = url.searchParams.get("uid");
+    var uid = "202402290222"; // Replace with actual UID
 
     // Load content based on UID
     fetch('https://raw.githubusercontent.com/TongSUE/testfile/gh-pages/content.json')
@@ -51,6 +50,7 @@
         var content = data[uid];
         if (content) {
           generateImage(content);
+          generateQRCode();
         } else {
           alert('Content not found!');
         }
@@ -65,7 +65,7 @@
       var templateImg = new Image();
       templateImg.onload = function() {
         // Resize template image
-        var scaleFactor = Math.min(window.innerWidth / templateImg.width, window.innerHeight / templateImg.height);
+        var scaleFactor = Math.min(canvasContainer.offsetWidth / templateImg.width, window.innerHeight / templateImg.height);
         canvas.width = templateImg.width * scaleFactor;
         canvas.height = templateImg.height * scaleFactor;
         ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
@@ -86,29 +86,26 @@
           ctx.textAlign = 'center';
           ctx.fillText(content.text, canvas.width / 2, 30); // Adjust position as needed
 
-          // Draw QR code
-          drawQRCode(canvas, 'https://tongsue.github.io/testfile/gptpagesqr.html?uid=' + uid, 10, canvas.height - 110, 100);
-
-          // After drawing, enable download button
-          document.getElementById('downloadButton').addEventListener('click', function() {
-            downloadImage(canvas);
-          });
+          // Generate QR code after drawing everything
+          generateQRCode(canvas);
         };
         otherImg.src = content.imageUrl;
       };
       templateImg.src = content.templateUrl;
     }
 
-    function drawQRCode(canvas, url, x, y, size) {
+    function generateQRCode(canvas) {
+      var ctx = canvas.getContext('2d');
       var qr = qrcode(0, 'L');
+      var url = 'https://tongsue.github.io/testfile/qr.html?uid=' + uid;
       qr.addData(url);
       qr.make();
-      var qrData = qr.createImgTag(size);
-      var qrImage = new Image();
-      qrImage.src = qrData;
-      qrImage.onload = function() {
-        ctx.drawImage(qrImage, x, y, size, size);
+      var qrData = qr.createDataURL(4, 0);
+      var qrImg = new Image();
+      qrImg.onload = function() {
+        ctx.drawImage(qrImg, 20, canvas.height - qrImg.height - 20); // Adjust position as needed
       };
+      qrImg.src = qrData;
     }
 
     function downloadImage(canvas) {
