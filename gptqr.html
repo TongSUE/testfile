@@ -8,15 +8,21 @@
     body {
       font-family: Arial, sans-serif;
       text-align: center;
+      margin: 0;
+      padding: 0;
     }
 
     #canvasContainer {
       position: relative;
-      margin: 20px auto;
+      width: 100vw;
+      height: 100vh;
     }
 
     canvas {
-      border: 1px solid #ccc;
+      display: block;
+      margin: auto;
+      max-width: 100%;
+      max-height: 100%;
     }
 
     #downloadButton, #introButton {
@@ -28,7 +34,7 @@
   <h1>Content Generator</h1>
 
   <div id="canvasContainer">
-    <canvas id="canvas" width="960" height="540"></canvas>
+    <canvas id="canvas"></canvas>
   </div>
 
   <button id="downloadButton">Download Image</button>
@@ -61,9 +67,10 @@
       var templateImg = new Image();
       templateImg.onload = function() {
         // Resize template image
-        canvas.width = templateImg.width;
-        canvas.height = templateImg.height;
-        ctx.drawImage(templateImg, 0, 0);
+        var scaleFactor = Math.min(window.innerWidth / templateImg.width, window.innerHeight / templateImg.height);
+        canvas.width = templateImg.width * scaleFactor;
+        canvas.height = templateImg.height * scaleFactor;
+        ctx.drawImage(templateImg, 0, 0, canvas.width, canvas.height);
 
         // Load other image
         var otherImg = new Image();
@@ -98,14 +105,25 @@
       var qr = qrcode(0, 'L');
       qr.addData(url);
       qr.make();
-      var qrImg = qr.createImgTag(6); // Adjust size as needed
-      var img = new Image();
-      img.onload = function() {
-        var x = canvas.width - img.width - 10;
-        var y = canvas.height - img.height - 10;
-        canvas.getContext('2d').drawImage(img, x, y);
-      };
-      img.src = qrImg.slice(10, -3); // Remove "data:image/png;base64," prefix
+      var qrData = qr.createImageData(10, 10);
+      for (var x = 0; x < qrData.width; x++) {
+        for (var y = 0; y < qrData.height; y++) {
+          var index = (y * qrData.width + x) * 4;
+          if (qr.isDark(x, y)) {
+            qrData.data[index] = 0;
+            qrData.data[index + 1] = 0;
+            qrData.data[index + 2] = 0;
+            qrData.data[index + 3] = 255;
+          } else {
+            qrData.data[index] = 255;
+            qrData.data[index + 1] = 255;
+            qrData.data[index + 2] = 255;
+            qrData.data[index + 3] = 255;
+          }
+        }
+      }
+      var qrImage = new ImageData(qrData, qrData.width, qrData.height);
+      ctx.putImageData(qrImage, 10, canvas.height - qrData.height - 10);
     }
 
     function downloadImage(canvas) {
