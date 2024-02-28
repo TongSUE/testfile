@@ -97,7 +97,7 @@
     function generateQRCode(canvas) {
       var ctx = canvas.getContext('2d');
       var qr = qrcode(0, 'L');
-      var url = 'https://tongsue.github.io/testfile/qr.html?uid=' + uid;
+      var url = 'https://tongsue.github.io/testfile/q.html?uid=' + uid;
       qr.addData(url);
       qr.make();
       var qrData = qr.createDataURL(4, 0);
